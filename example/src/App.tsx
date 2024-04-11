@@ -1,18 +1,15 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-sg-polar-sdk';
+import { StyleSheet, View, Text, NativeModules } from 'react-native';
+
+const { SgPolarSdk } = NativeModules;
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  console.log(SgPolarSdk);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Link!</Text>
     </View>
   );
 }
