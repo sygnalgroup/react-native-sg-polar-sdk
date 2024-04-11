@@ -47,7 +47,7 @@ class SgPolarSdk: RCTEventEmitter {
     callback([bleSdkManager?.checkBle() ?? false]);
   }
 
-  @objc func supportedEvents() -> [String] {
+  @objc override func supportedEvents() -> [String] {
   return [
     "connectionState",
     "listExerciseItem",
