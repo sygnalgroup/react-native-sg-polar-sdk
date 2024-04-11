@@ -74,6 +74,9 @@ android {
 repositories {
   mavenCentral()
   google()
+
+  // https://github.com/polarofficial/polar-ble-sdk?tab=readme-ov-file#android-getting-started
+  maven { url 'https://jitpack.io' }
 }
 
 
@@ -82,5 +85,10 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
+  // https://github.com/polarofficial/polar-ble-sdk?tab=readme-ov-file#android-getting-started
+  implementation 'com.github.polarofficial:polar-ble-sdk:5.5.0'
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
+  implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
 }
 
