@@ -94,4 +94,14 @@ public class SgPolarSdkModule extends ReactContextBaseJavaModule {
       callback.invoke(true);
     }
   }
+
+  @ReactMethod
+  public void addListener(String eventName) {
+    // Required for RN's NativeEventEmitter; no-op.
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+    // Required for RN's NativeEventEmitter; no-op.
+  }
 }
