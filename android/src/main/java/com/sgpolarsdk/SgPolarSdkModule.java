@@ -17,11 +17,19 @@ public class SgPolarSdkModule extends ReactContextBaseJavaModule {
 
   PolarModuleSDK moduleSDK;
   public String deviceId = "";
+  private final boolean bluetoothSupported;
 
   public SgPolarSdkModule(ReactApplicationContext reactContext) {
     super(reactContext);
 
-    moduleSDK = new PolarModuleSDK(reactContext, this);
+    bluetoothSupported = BluetoothAdapter.getDefaultAdapter() != null;
+  }
+
+  private PolarModuleSDK manager() {
+    if (moduleSDK == null) {
+      moduleSDK = new PolarModuleSDK(getReactApplicationContext(), this);
+    }
+    return moduleSDK;
   }
 
   @Override
@@ -32,14 +40,16 @@ public class SgPolarSdkModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void connectToDevice(String deviceId) {
+    if (!bluetoothSupported) return;
     this.deviceId = deviceId;
-    moduleSDK.connectToDevice(deviceId);
+    manager().connectToDevice(deviceId);
   }
 
   @ReactMethod
   public void disconnectFromDevice(String deviceId) {
+    if (!bluetoothSupported) return;
     try {
-        moduleSDK.disconnectFromDevice(deviceId);
+        manager().disconnectFromDevice(deviceId);
     } catch (Exception e) {
 
     }
@@ -49,35 +59,38 @@ public class SgPolarSdkModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void startDevicesSearch() {
-    moduleSDK.scanDevices();
+    if (!bluetoothSupported) return;
+    manager().scanDevices();
   }
 
   @ReactMethod
   public void stopDevicesSearch() {
+    if (!bluetoothSupported || moduleSDK == null) return;
     moduleSDK.stopScanDevices();
   }
 
   @ReactMethod
   public void broadcastToggle() {
-    moduleSDK.startStreamHr();
+    if (!bluetoothSupported) return;
+    manager().startStreamHr();
   }
 
   @ReactMethod
   public void getExercises() {
-    moduleSDK.listExercises();
+    if (!bluetoothSupported) return;
+    manager().listExercises();
   }
 
   @ReactMethod
   public void checkBle(Callback callback) {
-    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    if (mBluetoothAdapter == null) {
-      // Device does not support Bluetooth
+    if (!bluetoothSupported) {
       callback.invoke(false);
-    } else if (!mBluetoothAdapter.isEnabled()) {
-      // Bluetooth is not enabled :)
+      return;
+    }
+    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    if (!mBluetoothAdapter.isEnabled()) {
       callback.invoke(false);
     } else {
-      // Bluetooth is enabled
       callback.invoke(true);
     }
   }
