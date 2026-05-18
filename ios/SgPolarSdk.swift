@@ -10,21 +10,26 @@ class SgPolarSdk: RCTEventEmitter {
 
   override init() {
     super.init()
+  }
 
-    bleSdkManager = PolarModuleSDK(self);
+  private func manager() -> PolarModuleSDK {
+    if bleSdkManager == nil {
+      bleSdkManager = PolarModuleSDK(self)
+    }
+    return bleSdkManager!
   }
 
   @objc func connectToDevice(_ id: String) {
     self.deviceId = id;
-    bleSdkManager?.connectToDevice(id);
+    manager().connectToDevice(id);
   }
 
   @objc func disconnectFromDevice(_ id: String) {
-    bleSdkManager?.disconnectFromDevice(id);
+    manager().disconnectFromDevice(id);
   }
 
   @objc func startDevicesSearch() {
-    bleSdkManager?.startDevicesSearch();
+    manager().startDevicesSearch();
   }
 
   @objc func stopDevicesSearch() {
@@ -32,19 +37,19 @@ class SgPolarSdk: RCTEventEmitter {
   }
 
   @objc func broadcastToggle() {
-    bleSdkManager?.broadcastToggle();
+    manager().broadcastToggle();
   }
 
   @objc func getExercises() {
-    bleSdkManager?.listH10Exercises();
+    manager().listH10Exercises();
   }
 
   @objc func deleteExercise(_ entryId: String) {
-    bleSdkManager?.deleteExercise(entryId);
+    manager().deleteExercise(entryId);
   }
 
   @objc func checkBle(_ callback: RCTResponseSenderBlock) {
-    callback([bleSdkManager?.checkBle() ?? false]);
+    callback([manager().checkBle()]);
   }
 
   @objc override func supportedEvents() -> [String] {
